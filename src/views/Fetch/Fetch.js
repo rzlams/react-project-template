@@ -7,13 +7,17 @@ const Fetch = props => {
   const { url } = useRouteMatch()
   const { state: routeState } = useLocation()
 
-  if (loading) return null // o un spinner
+  if (loading) return <h1>Loading...</h1>
   if (error) return `Error! ${error}`
 
   return (
     <div>
-      <hr />
       {/* mostrar con un componente que aparezca como el 'message' de ant design*/ routeState && routeState.redirectReason}
+      <br />
+      <br />
+      <hr />
+      <button onClick={() => refetch()}>Refetch</button>
+      <hr />
       <br />
       <br />
       <Link to={`${url}/lazy`}>Ir a LazyFetch</Link>
@@ -26,8 +30,6 @@ const Fetch = props => {
             {user.first_name} {user.last_name}
           </h5>
         ))}
-      <button onClick={() => refetch()}>Refetch</button>
-      <hr />
     </div>
   )
 }

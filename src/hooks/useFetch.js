@@ -1,28 +1,29 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useState } from 'react'
+import { useCompareEffect } from './useCompareEffect'
 import axios from 'axios'
-import { deepEqual } from '../utils'
 
 export const useFetch = (url, body = {}, method = 'get') => {
+  // TODO: evaluar usar cache en el store global
+  // TODO: ***revisar si el 'refetchTrigger' lo hace null aun cuando no debe*** ESTO CREO QUE ESTA BIEN ASI
+  // TODO: manejar el error de timeout de axios
   const cache = useRef({})
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [data, setData] = useState(null)
   const [refetchTrigger, setRefetchTrigger] = useState(false)
+  // no se usa useRef como en el cache porque si se quiere que 'params' y 'body' disparen el effect
   let params = {}
   if (method === 'get') {
     params = body
     body = {}
   }
-  // NO SIRVE TODAVIA
-  // cuando cambia el refetchTrigger no se recibe el balon fuera de la funcion
   const refetch = () => {
-    setRefetchTrigger(!refetchTrigger)
+    setRefetchTrigger(true)
   }
 
-  useEffect(() => {
-    console.log('entro en effect')
+  useCompareEffect(() => {
     if (refetchTrigger) {
-      console.log('refetch')
+      cache.current[url] = null
     }
     let cancelRequest = false
     if (!url) return
@@ -60,6 +61,7 @@ export const useFetch = (url, body = {}, method = 'get') => {
           cache.current[url] = response.data
           setData(response.data)
           setLoading(false)
+          setRefetchTrigger(false)
         } catch (error) {
           if (error.response) {
             console.log(error.response.data)
@@ -78,6 +80,7 @@ export const useFetch = (url, body = {}, method = 'get') => {
           console.log(error.config)
           setData(null)
           setLoading(false)
+          setRefetchTrigger(false)
         }
       }
     }
