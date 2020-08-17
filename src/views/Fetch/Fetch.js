@@ -1,10 +1,11 @@
 import React from 'react'
-import { Link, useRouteMatch } from 'react-router-dom'
+import { Link, useRouteMatch, useLocation } from 'react-router-dom'
 import { useFetch } from '../../hooks/useFetch'
 
 const Fetch = props => {
   const { loading, error, data, refetch } = useFetch('https://reqres.in/api/users', { page: 2 })
   const { url } = useRouteMatch()
+  const { state: routeState } = useLocation()
 
   if (loading) return null // o un spinner
   if (error) return `Error! ${error}`
@@ -12,6 +13,9 @@ const Fetch = props => {
   return (
     <div>
       <hr />
+      {/* mostrar con un componente que aparezca como el 'message' de ant design*/ routeState && routeState.redirectReason}
+      <br />
+      <br />
       <Link to={`${url}/lazy`}>Ir a LazyFetch</Link>
       <br />
       <Link to={'/'}>Ir a Counter</Link>

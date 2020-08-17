@@ -2,7 +2,9 @@ export default {
   checkPermissions: ({ ...rest }, { permissions, auth }) => {
     try {
       const hasPermissions = permissions.every(perm => auth.permissions.some(v => v === perm))
-      return hasPermissions ? { next: true, redirectPath: null, ...rest } : { next: false, component: null, redirectPath: '/fetch' }
+      return hasPermissions
+        ? { next: true, redirectPath: null, ...rest }
+        : { next: false, component: null, redirectPath: '/fetch', redirectReason: 'Already Logged In' }
     } catch (err) {
       console.error(err)
     }

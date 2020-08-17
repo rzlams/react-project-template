@@ -28,9 +28,18 @@ const RouteWrapper = ({ mwares, permissions, ...rest }) => {
 
   const render = () => {
     const routeProps = resolveMiddlewares()
-    const { component, redirectPath } = routeProps
+    const { component, redirectPath, redirectReason } = routeProps
 
-    return component !== null && redirectPath === null ? <Route {...routeProps} /> : <Redirect to={redirectPath} />
+    return component !== null && redirectPath === null ? (
+      <Route {...routeProps} />
+    ) : (
+      <Redirect
+        to={{
+          pathname: redirectPath,
+          state: { redirectReason: redirectReason },
+        }}
+      />
+    )
   }
 
   return render()

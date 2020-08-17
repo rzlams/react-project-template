@@ -1,21 +1,22 @@
 import { useRef, useEffect, useState } from 'react'
 import axios from 'axios'
+import { deepEqual } from '../utils'
 
 export const useFetch = (url, body = {}, method = 'get') => {
   const cache = useRef({})
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [data, setData] = useState(null)
+  const [refetchTrigger, setRefetchTrigger] = useState(false)
   let params = {}
   if (method === 'get') {
     params = body
     body = {}
   }
-  let refetchTrigger = false
   // NO SIRVE TODAVIA
   // cuando cambia el refetchTrigger no se recibe el balon fuera de la funcion
   const refetch = () => {
-    refetchTrigger = !refetchTrigger
+    setRefetchTrigger(!refetchTrigger)
   }
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export const useFetch = (url, body = {}, method = 'get') => {
               Authorization: 'Bearer token',
               'Content-Type': 'application/json',
             },
-            timeout: 5000,
+            // timeout: 5, // en milisegundos
           })
 
           cache.current[url] = response.data
