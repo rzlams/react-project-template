@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react'
-import { deepEqual } from '../utils'
+import { deepEqual } from '../utils/deep-equal-compare'
 
 export const useCompareEffect = (fn, deps, compareType = 'simple') => {
   const isFirst = useRef(true)
@@ -22,6 +22,4 @@ export const useCompareEffect = (fn, deps, compareType = 'simple') => {
     isFirst.current = false
     prevDeps.current = deps
   })
-  // opcionalmente puedo agregar 'deps' como segundo argumento pero me parecio innecesario
-  // sin el segundo argumento evito que react haga cualquier comprobacion y yo me encargo totalmente de eso
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 
-export const useLazyFetch = url => {
+export const useLazyFetch = (url, onCompleted = null) => {
   // TODO: manejar el error de timeout de axios
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -37,6 +37,7 @@ export const useLazyFetch = url => {
         // timeout: 5, // en milisegundos
       })
 
+      if (onCompleted && typeof onCompleted === 'function') onCompleted(response.data)
       setData(response.data)
       setLoading(false)
     } catch (error) {

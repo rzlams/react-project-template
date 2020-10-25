@@ -1,10 +1,18 @@
-// Los reducer se deben pensar como casos de uso. NO necesitan seguir la misma estructura que los stores
-
-// Se debe respetar la siguiente convencion de nombres:
-// reducer: camelCase con el sufijo Reducer
-// action.type: comienzan con el nombre del reducer al que apuntan, sin el sufijo 'Reducer'
-// action.type: el prefjio se separa por un espacio del nombre de la accion como tal
-// action.type: nombres de reducer con mas de una palabra se separan por un guion
+/*
+  |--------------------------------------------------------------------------
+  | Reducers
+  |--------------------------------------------------------------------------
+  |
+  | Son los responsables de mutar el state. Se puede tener un reducer por store
+  | pero NO es necesario seguir la misma estructura que los stores.
+  | Se debe respetar la siguiente convencion de nombres:
+  | - reducer: camelCase mas el sufijo 'Reducer'
+  | - action.type:
+  | * Se usa como prefijo el nombre del reducer al que apuntan, sin el sufijo 'Reducer'
+  | * Este prefjio se separa con un espacio del resto del nombre del accion.type
+  | * Para el prefijo, los nombres de reducer con mas de una palabra se separan con guiones
+  |
+*/
 import authReducer from './authReducer'
 import counterReducer from './counterReducer'
 import usersReducer from './usersReducer'

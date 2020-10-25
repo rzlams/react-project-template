@@ -1,11 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link, useRouteMatch, useLocation } from 'react-router-dom'
 import { useFetch } from '../../hooks/useFetch'
+import { Context } from '../../store'
 
 const Fetch = props => {
-  const { loading, error, data, refetch } = useFetch('https://reqres.in/api/users', { page: 2 })
+  const [{ users }, dispatch] = useContext(Context) // eslint-disable-line
+  const { loading, error, data, refetch } = useFetch('https://reqres.in/api/users', { page: 2 }, 'get', onCompleted)
   const { url } = useRouteMatch()
   const { state: routeState } = useLocation()
+
+  function onCompleted(res) {
+    dispatch({
+      type: 'USERS FETCHED',
+      payload: res.data,
+    })
+  }
 
   if (loading) return <h1>Loading...</h1>
   if (error) return `Error! ${error}`

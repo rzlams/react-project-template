@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { useCompareEffect } from './useCompareEffect'
 import axios from 'axios'
 
-export const useFetch = (url, body = {}, method = 'get') => {
+export const useFetch = (url, body = {}, method = 'get', onCompleted = null) => {
   // TODO: evaluar usar cache en el store global
   // TODO: ***revisar si el 'refetchTrigger' lo hace null aun cuando no debe*** ESTO CREO QUE ESTA BIEN ASI
   // TODO: manejar el error de timeout de axios
@@ -58,6 +58,7 @@ export const useFetch = (url, body = {}, method = 'get') => {
             // timeout: 5, // en milisegundos
           })
 
+          if (onCompleted && typeof onCompleted === 'function') onCompleted(response.data)
           cache.current[url] = response.data
           setData(response.data)
           setLoading(false)

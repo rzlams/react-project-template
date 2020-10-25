@@ -10,8 +10,8 @@ const LazyFetch = props => {
   const { hasPermissions } = useStore({...state})
   const [myQuery, { loading, error}] = useLazyFetch('https://reqres.in/api/users', onCompleted)
 
+  const [validate, ErrorComponent, submitHandler] = useValidation(initialValues, validation)
   const [formData, setFormData] = useState(initialValues)
-  const [validate, formErrors, submitHandler] = useValidation({initialValues, validation, onValidated})
 
   function onCompleted(data) {
     dispatch({
@@ -20,22 +20,18 @@ const LazyFetch = props => {
     })
   }
 
-  function onValidated(key, error){
-    if(error !== null) return
+  const onValidated = (component) => {
     // Aca puedes pedir info al backend con debounce.
     // Por ej: para saber si el usuario que se esta tipeando ya esta registrado
-    console.log('key: ', key)
+    // console.log(component)
+    // console.log(component.props.value)
   }
 
   const onSubmit = (e) => {
-    if(! submitHandler(e, formData)) return
+    if(submitHandler(e, formData)){
+      console.log('paso la validacion')
+    }
     // Aca hago la llamada al backend para hacer la accion del submit
-    console.log('paso la validacion')
-  }
-
-  const onChange = (e) => {
-    validate(e.target.name, e.target.value)
-    setFormData({...formData, [e.target.name]: e.target.value})
   }
 
   if (loading) return <h1>Loading...</h1>
@@ -45,21 +41,21 @@ const LazyFetch = props => {
     <div>
       <h5>Lazy Fetch</h5>
       <form onSubmit={onSubmit}>
+      {validate('email', onValidated)(
       <input
-        type="text"
-        name={'email'}
+        type="email"
         value={formData.email}
-        onChange={onChange}
-      />
-      {formErrors && formErrors.email}
+        onChange={e => setFormData({...formData, email: e.target.value})}
+      />)}
+      <ErrorComponent field="email" />
       <br />
+      {validate('password', onValidated)(
       <input
         type="text"
-        name={'password'}
         value={formData.password}
-        onChange={onChange}
-      />
-      {formErrors && formErrors.password}
+        onChange={e => setFormData({...formData, password: e.target.value})}
+      />)}
+      <ErrorComponent field="password" />
       <br />
       <button>Submit</button>
       </form>

@@ -1,4 +1,5 @@
-// devuelve true si ambos objetos son iguales
+// retorna true si ambos valores (incluidos objetos y arrays) son iguales
+// si dos objetos tienen las mismas key y valores pero en posiciones diferente, retorna false
 export const deepEqual = (a, b) => {
   let keyA, keyB
   if (typeof a === 'object' && a !== null && typeof b === 'object' && b !== null) {

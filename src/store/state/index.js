@@ -1,6 +1,14 @@
-// Los store se deben pensar como entidades, deben coincidir con las interfaces declaradas en typescript
+/*
+  |--------------------------------------------------------------------------
+  | Stores
+  |--------------------------------------------------------------------------
+  |
+  | Aca se unen los store para armar el state que se consume en context
+  | En cada store se debe setear su state inicial, similar a las defaultProps.
+  | Se deben nombra con camelCase mas el sufijo 'Store'.
+  |
+*/
 
-// Se debe respetar la siguiente convencion de nombres: camelCase con el sufijo Store
 import authStore from './authStore'
 import counterStore from './counterStore'
 import usersStore from './usersStore'
